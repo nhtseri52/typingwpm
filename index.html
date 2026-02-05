@@ -3,318 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V50 TITAN - CỘNG ĐỒNG CHIẾN THẦN</title>
+    <title>V60 GENESIS - HỆ THỐNG GÕ PHÍM CHIẾN THUẬT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ========================================
+           CORE DESIGN SYSTEM (TITAN UI)
+           ========================================
+        */
         :root {
-            --bg-main: #f0f2f5; --white: #ffffff; --primary: #337ab7; --success: #5cb85c;
-            --text-dark: #333; --text-muted: #777; --border: #ddd;
+            --p-color: #2c3e50; --s-color: #3498db; --a-color: #e74c3c;
+            --bg-body: #ebf0f5; --bg-card: #ffffff; --text-main: #333;
+            --text-muted: #888; --border: #d1d8e0; --success: #27ae60;
+            --shadow: 0 4px 15px rgba(0,0,0,0.08); --radius: 12px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: var(--bg-main); display: flex; height: 100vh; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', sans-serif; }
+        body { background: var(--bg-body); color: var(--text-main); height: 100vh; display: flex; overflow: hidden; }
 
-        /* SIDEBAR */
-        .sidebar { width: 260px; background: var(--white); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
-        .sidebar-header { padding: 30px 20px; font-size: 22px; font-weight: bold; color: var(--primary); border-bottom: 1px solid #eee; }
-        .nav-item { padding: 15px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #555; font-weight: 500; transition: 0.2s; }
-        .nav-item:hover { background: #f9f9f9; }
-        .nav-item.active { background: var(--primary); color: white; }
-        .nav-item.admin { color: #d9534f; margin-top: auto; border-top: 1px solid #eee; }
+        /* --- NAVIGATION SIDEBAR --- */
+        .titan-sidebar {
+            width: 280px; background: var(--p-color); color: white;
+            display: flex; flex-direction: column; transition: 0.3s;
+        }
+        .sidebar-brand {
+            padding: 40px 25px; font-size: 24px; font-weight: 800; letter-spacing: 1px;
+            background: rgba(0,0,0,0.1); display: flex; align-items: center; gap: 12px;
+        }
+        .sidebar-menu { flex: 1; padding: 20px 0; }
+        .menu-item {
+            padding: 18px 30px; display: flex; align-items: center; gap: 15px;
+            cursor: pointer; transition: 0.2s; color: rgba(255,255,255,0.7); font-weight: 500;
+        }
+        .menu-item:hover { background: rgba(255,255,255,0.05); color: white; }
+        .menu-item.active { background: var(--s-color); color: white; border-right: 5px solid white; }
+        .sidebar-footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
 
-        /* MAIN CONTENT */
-        .content { flex: 1; padding: 30px; overflow-y: auto; background: var(--white); margin: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .page { display: none; }
+        /* --- MAIN STAGE --- */
+        .main-stage { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+        .top-bar {
+            height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 40px;
+        }
+        .view-container { flex: 1; padding: 40px; overflow-y: auto; scroll-behavior: smooth; }
+        .page { display: none; animation: slideUp 0.4s ease-out; }
         .page.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* TYPING AREA */
-        .typing-container { max-width: 900px; margin: 0 auto; }
-        .word-box { background: #fdfdfd; border: 1px solid var(--border); border-radius: 6px; padding: 20px; font-size: 28px; line-height: 50px; height: 120px; overflow: hidden; margin-bottom: 20px; position: relative; }
-        .word-rail { position: absolute; transition: 0.2s; }
-        .word-rail span { margin-right: 15px; padding: 2px 8px; border-radius: 4px; color: #999; }
-        .word-rail span.current { background: #ddd; color: #000; }
-        .word-rail span.ok { color: var(--success); }
-        .word-rail span.err { color: #d9534f; background: #f2dede; }
-        
-        .input-line { display: flex; gap: 10px; }
-        .main-input { flex: 1; padding: 15px; font-size: 24px; border: 2px solid var(--border); border-radius: 6px; outline: none; }
-        .main-input:focus { border-color: var(--primary); }
-        .timer-box { width: 100px; background: #333; color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: bold; border-radius: 6px; }
+        /* --- COMPONENT: CARDS & TABLES --- */
+        .card { background: var(--bg-card); border-radius: var(--radius); padding: 25px; box-shadow: var(--shadow); margin-bottom: 30px; }
+        .titan-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: var(--radius); overflow: hidden; }
+        .titan-table th { background: #f8f9fa; padding: 15px; text-align: left; font-size: 13px; color: var(--text-muted); text-transform: uppercase; border-bottom: 2px solid var(--border); }
+        .titan-table td { padding: 18px 15px; border-bottom: 1px solid #f1f1f1; vertical-align: middle; }
+        .titan-table tr:hover { background: #fafafa; }
 
-        /* COMMUNITY TABLE (10FastFingers Style) */
-        .comm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid var(--bg-main); padding-bottom: 15px; }
-        .btn-create { background: var(--success); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        
-        .titan-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .titan-table th { text-align: left; padding: 12px; background: #f9f9f9; border-bottom: 2px solid var(--border); color: var(--text-muted); font-size: 14px; }
-        .titan-table td { padding: 15px 12px; border-bottom: 1px solid #eee; vertical-align: middle; }
-        .status-tag { background: var(--success); color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; text-transform: uppercase; }
-        .text-title { color: var(--primary); font-weight: bold; cursor: pointer; font-size: 16px; text-decoration: none; }
-        .text-preview { color: var(--text-muted); font-size: 13px; margin-top: 4px; display: block; }
-        .btn-play { background: #f0f0f0; border: 1px solid #ccc; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; }
-        .btn-play:hover { background: #e0e0e0; }
+        /* --- COMPONENT: TYPING ENGINE --- */
+        .typing-box { position: relative; background: #fff; border: 2px solid var(--border); border-radius: var(--radius); padding: 35px; margin-top: 20px; }
+        .word-stream { 
+            font-size: 32px; line-height: 60px; height: 120px; overflow: hidden; 
+            margin-bottom: 30px; color: #999; position: relative; user-select: none;
+        }
+        .word-canvas { position: absolute; top: 0; left: 0; transition: 0.3s; }
+        .word-canvas span { margin-right: 20px; padding: 2px 10px; border-radius: 6px; display: inline-block; }
+        .word-canvas .current { background: #e2e8f0; color: #2d3436; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .word-canvas .correct { color: var(--success); }
+        .word-canvas .wrong { color: var(--a-color); background: #ffeaa7; }
 
-        /* MODAL */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 100; }
-        .modal-content { background: white; padding: 30px; border-radius: 8px; width: 500px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; }
+        .input-group { display: flex; gap: 20px; align-items: center; }
+        .titan-input {
+            flex: 1; padding: 20px 30px; font-size: 28px; border: 2px solid var(--border);
+            border-radius: var(--radius); outline: none; transition: 0.3s;
+        }
+        .titan-input:focus { border-color: var(--s-color); box-shadow: 0 0 0 5px rgba(52, 152, 219, 0.2); }
+        .timer-display { width: 120px; height: 75px; background: #2d3436; color: #fab1a0; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; border-radius: var(--radius); }
+
+        /* --- COMMUNITY UI --- */
+        .badge-status { background: #dff9fb; color: #130f40; padding: 4px 10px; border-radius: 5px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+        .post-title { font-size: 17px; font-weight: 700; color: var(--s-color); text-decoration: none; cursor: pointer; }
+        .post-preview { font-size: 13px; color: var(--text-muted); display: block; margin-top: 5px; }
+        .btn-titan { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; transition: 0.2s; }
+        .btn-p { background: var(--s-color); color: white; }
+        .btn-p:hover { background: #2980b9; }
+        .btn-s { background: #f1f2f6; color: #2f3542; border: 1px solid var(--border); }
+
+        /* --- MODAL --- */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 999; backdrop-filter: blur(5px); }
+        .modal-body { background: white; width: 600px; padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .modal-body h2 { margin-bottom: 25px; }
+        .form-control { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; }
+
+        /* --- STATS OVERLAY --- */
+        .overlay-result { position: absolute; inset: 0; background: rgba(255,255,255,0.98); z-index: 50; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="sidebar-header">V50 TITAN</div>
-        <div class="nav-item active" onclick="App.showPage('home')"><i class="fa-solid fa-keyboard"></i> Luyện tập gõ</div>
-        <div class="nav-item" onclick="App.showPage('comm')"><i class="fa-solid fa-users"></i> Chế độ luyện tập</div>
-        <div class="nav-item" onclick="App.showPage('rank')"><i class="fa-solid fa-trophy"></i> Bảng vàng</div>
-        <div class="nav-item admin" onclick="App.showPage('adm')"><i class="fa-solid fa-lock"></i> QUẢN TRỊ VIÊN</div>
-    </div>
-
-    <div class="content">
-        <div id="p-home" class="page active">
-            <div class="typing-container">
-                <h2 id="typing-title" style="margin-bottom: 20px; color: var(--text-muted);">Văn bản mặc định</h2>
-                <div class="word-box">
-                    <div id="word-rail" class="word-rail"></div>
-                </div>
-                <div class="input-line">
-                    <input type="text" id="typer" class="main-input" placeholder="Gõ tại đây..." autocomplete="off">
-                    <div id="timer" class="timer-box">1:00</div>
-                    <button class="btn-play" style="width: 60px;" onclick="App.resetTyping()"><i class="fa-solid fa-sync"></i></button>
-                </div>
-                <div id="res-box" style="margin-top: 30px; display: none; padding: 20px; background: #dff0d8; border-radius: 6px; color: #3c763d;">
-                    <h3>Kết quả: <span id="res-wpm">0</span> WPM | Chính xác: <span id="res-acc">0</span>%</h3>
+    <div class="titan-sidebar">
+        <div class="sidebar-brand"><i class="fa-solid fa-fire-bolt"></i> V60 GENESIS</div>
+        <div class="sidebar-menu">
+            <div class="menu-item active" onclick="Router.go('home')"><i class="fa-solid fa-keyboard"></i> Luyện tập gõ</div>
+            <div class="menu-item" onclick="Router.go('community')"><i class="fa-solid fa-users"></i> Chế độ cộng đồng</div>
+            <div class="menu-item" onclick="Router.go('ranking')"><i class="fa-solid fa-ranking-star"></i> Xếp hạng cao thủ</div>
+            <div class="menu-item" onclick="Router.go('profile')"><i class="fa-solid fa-circle-user"></i> Hồ sơ của tôi</div>
+        </div>
+        <div class="sidebar-footer">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--s-color); display: flex; align-items: center; justify-content: center; font-weight: 800;">T</div>
+                <div>
+                    <p style="font-size: 14px; font-weight: 700;">TITAN_USER</p>
+                    <p style="font-size: 11px; opacity: 0.6;">Phiên bản Pro v60.0</p>
                 </div>
             </div>
         </div>
-
-        <div id="p-comm" class="page">
-            <div class="comm-header">
-                <h2>Chế độ Luyện tập Đánh máy</h2>
-                <button class="btn-create" onclick="App.openModal()">+ Tạo văn bản</button>
-            </div>
-            
-            <table class="titan-table">
-                <thead>
-                    <tr>
-                        <th width="80">Trạng thái</th>
-                        <th>Tiêu đề</th>
-                        <th width="120">Độ dài</th>
-                        <th width="120">Đã hoàn thành</th>
-                        <th width="100">Hành động</th>
-                    </tr>
-                </thead>
-                <tbody id="comm-table-body">
-                    </tbody>
-            </table>
-        </div>
-
-        <div id="p-rank" class="page"><h1>Bảng Xếp Hạng</h1></div>
-        <div id="p-adm" class="page"><h1>Quản Trị Hệ Thống</h1></div>
     </div>
 
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <h3>Tạo văn bản luyện tập mới</h3>
-            <div class="form-group" style="margin-top: 20px;">
-                <label>Tiêu đề</label>
-                <input type="text" id="m-title" placeholder="Ví dụ: Thuyền Quyên, Văn bản tập 1...">
+    <div class="main-stage">
+        <div class="top-bar">
+            <h2 id="top-title">BẢNG ĐIỀU KHIỂN</h2>
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <span id="live-clock" style="font-weight: 600; color: var(--text-muted);">21:37 PM</span>
+                <button class="btn-titan btn-p" onclick="Engine.reset()">BẮT ĐẦU LẠI</button>
             </div>
-            <div class="form-group">
-                <label>Nội dung</label>
-                <textarea id="m-content" rows="6" placeholder="Nhập nội dung văn bản tại đây..."></textarea>
+        </div>
+
+        <div class="view-container">
+            <div id="page-home" class="page active">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div>
+                        <h1 id="typing-header">Văn bản ngẫu nhiên</h1>
+                        <p style="color: var(--text-muted);">Hãy gõ chính xác nhất có thể để thăng hạng.</p>
+                    </div>
+                    <div style="display: flex; gap: 15px;">
+                        <div class="card" style="padding: 10px 20px; margin: 0; text-align: center;">
+                            <p style="font-size: 10px; color: var(--text-muted);">TỐC ĐỘ</p>
+                            <h3 id="stat-wpm">0</h3>
+                        </div>
+                        <div class="card" style="padding: 10px 20px; margin: 0; text-align: center;">
+                            <p style="font-size: 10px; color: var(--text-muted);">CHÍNH XÁC</p>
+                            <h3 id="stat-acc">0%</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="typing-box">
+                    <div id="engine-result" class="overlay-result">
+                        <h1 style="font-size: 48px; color: var(--p-color);">KẾT QUẢ</h1>
+                        <div style="display: flex; gap: 40px; margin: 30px 0;">
+                            <div><p>WPM</p><h2 id="res-wpm" style="font-size: 60px; color: var(--s-color);">0</h2></div>
+                            <div><p>ĐÚNG/SAI</p><h2 style="font-size: 60px;"><span id="res-ok" style="color: var(--success);">0</span>/<span id="res-err" style="color: var(--a-color);">0</span></h2></div>
+                        </div>
+                        <button class="btn-titan btn-p" style="padding: 15px 40px;" onclick="Engine.reset()">THỬ LẠI BÀI MỚI</button>
+                    </div>
+
+                    <div class="word-stream">
+                        <div id="word-canvas" class="word-canvas"></div>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="master-input" class="titan-input" placeholder="Bắt đầu gõ để tính giờ..." autocomplete="off">
+                        <div id="engine-timer" class="timer-display">1:00</div>
+                        <button class="timer-display" style="width: 80px; background: var(--border); color: #333; cursor: pointer;" onclick="Engine.reset()"><i class="fa-solid fa-rotate"></i></button>
+                    </div>
+                </div>
             </div>
+
+            <div id="page-community" class="page">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                    <div>
+                        <h1>Chế độ Luyện tập Đánh máy</h1>
+                        <p style="color: var(--text-muted);">Chọn một văn bản từ cộng đồng để luyện tập chuyên sâu.</p>
+                    </div>
+                    <button class="btn-titan btn-p" onclick="UI.openModal()">+ TẠO VĂN BẢN MỚI</button>
+                </div>
+
+                <div class="card" style="padding: 0;">
+                    <table class="titan-table">
+                        <thead>
+                            <tr>
+                                <th width="100">Trạng thái</th>
+                                <th>Tiêu đề & Nội dung</th>
+                                <th width="150">Độ dài</th>
+                                <th width="150">Đã hoàn thành</th>
+                                <th width="120">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comm-tbody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="page-ranking" class="page">
+                <h1>BẢNG VÀNG CAO THỦ</h1>
+                <div class="card" style="margin-top: 20px;">
+                    <table class="titan-table" id="ranking-table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-post" class="modal-overlay">
+        <div class="modal-body">
+            <h2>Tạo bài tập mới</h2>
+            <label>Tiêu đề bài tập</label>
+            <input type="text" id="m-title" class="form-control" placeholder="Ví dụ: Thuyền Quyên, Luyện ngón cơ bản...">
+            <label>Nội dung (Tối thiểu 20 từ)</label>
+            <textarea id="m-content" class="form-control" rows="8" placeholder="Dán văn bản của bạn vào đây..."></textarea>
             <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                <button class="btn-play" onclick="App.closeModal()">Hủy</button>
-                <button class="btn-create" onclick="App.savePost()">Lưu và Công khai</button>
+                <button class="btn-titan btn-s" onclick="UI.closeModal()">HỦY BỎ</button>
+                <button class="btn-titan btn-p" onclick="App.createPost()">CÔNG KHAI BÀI VIẾT</button>
             </div>
         </div>
     </div>
 
     <script>
-        const DEFAULT_WORDS = "anh em gia đình trường học máy tính điện thoại bàn phím chuột màn hình lập trình thông minh chiến thắng nỗ lực kiên trì thành công hạnh phúc việt nam hà nội sài gòn du lịch biển nước ăn ngon vui vẻ tự tin".split(" ");
+        /* ========================================
+           TITAN CORE ENGINE (V60)
+           ========================================
+        */
+        
+        const WORDS_POOL = "anh em gia đình trường học máy tính điện thoại bàn phím chuột màn hình lập trình thông minh chiến thắng nỗ lực kiên trì thành công hạnh phúc việt nam hà nội sài gòn du lịch biển nước ăn ngon vui vẻ tự tin sáng tạo lịch sử toán vật lý hóa học tiếng anh độc lập tự do tổ quốc bạn bè sinh nhật lễ hội xuân hạ thu đông vở viết kiến thức kỹ năng văn phòng chất lượng tài chính sức khỏe thể thao bóng đá gym phim ảnh mạng xã hội chụp hình nhà khách sạn cà phê trà sữa phở bún cơm trái cây cam táo bia rượu mưa nắng gió mây trời đất sông núi rừng cây hoa lá vàng bạc đồng sắt thép nhôm kính nhựa giấy bút mực thước cặp sách bàn ghế giường tủ bếp nồi chảo chén đĩa muỗng đũa khăn áo quần giày dép mũ nón ví tiền đồng hồ kính mát nhẫn dây chuyền vòng tay tai nghe loa pin sạc cáp wifi web app code game phim nhạc họa ca múa hát nhảy đàn sáo trống kèn vẽ tô màu tranh ảnh tượng đá gạch cát vôi xi măng sơn gỗ tre nứa lá cọ dừa chuối xoài ổi mận đào lê nho dâu bơ mít dứa khế chanh ớt tỏi hành gừng sả tiêu muối đường mì chính dầu mỡ thịt cá tôm cua ốc ếch lươn gà vịt ngỗng heo bò trâu dê cừu ngựa voi hổ báo sư tử gấu khỉ vượn nai hoẵng thỏ chuột mèo chó chim cá sâu bướm ong kiến gián muỗi ruồi nhện rắn rùa thằn lằn".split(" ");
 
         const App = {
-            currentWords: [],
-            wordIndex: 0,
-            timer: null,
-            timeLeft: 60,
-            isActive: false,
-            correctCount: 0,
-            wrongCount: 0,
-            currentTextTitle: "Văn bản ngẫu nhiên",
-
+            posts: [],
+            
             init() {
-                this.renderCommTable();
-                this.resetTyping();
-                
-                document.getElementById('typer').addEventListener('input', (e) => this.handleTyping(e));
+                this.loadData();
+                Engine.init();
+                Router.init();
+                UI.updateClock();
+                this.renderCommunity();
             },
 
-            showPage(pageId) {
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                document.getElementById('p-' + pageId).classList.add('active');
-                event.currentTarget.classList.add('active');
-                if(pageId === 'comm') this.renderCommTable();
-            },
-
-            // TYPING LOGIC
-            resetTyping(wordsArr = null, title = "Văn bản ngẫu nhiên") {
-                clearInterval(this.timer);
-                this.isActive = false;
-                this.timeLeft = 60;
-                this.wordIndex = 0;
-                this.correctCount = 0;
-                this.wrongCount = 0;
-                this.currentTextTitle = title;
-                
-                document.getElementById('typing-title').innerText = title;
-                document.getElementById('timer').innerText = "1:00";
-                document.getElementById('typer').value = "";
-                document.getElementById('typer').disabled = false;
-                document.getElementById('res-box').style.display = 'none';
-
-                if(!wordsArr) {
-                    this.currentWords = [];
-                    for(let i=0; i<100; i++) this.currentWords.push(DEFAULT_WORDS[Math.floor(Math.random()*DEFAULT_WORDS.length)]);
-                } else {
-                    this.currentWords = wordsArr;
-                }
-
-                this.renderWords();
-            },
-
-            renderWords() {
-                const rail = document.getElementById('word-rail');
-                rail.style.top = "20px";
-                rail.innerHTML = this.currentWords.map((w, i) => `<span id="word-${i}">${w}</span>`).join('');
-                document.getElementById('word-0').className = 'current';
-            },
-
-            handleTyping(e) {
-                if(!this.isActive && e.target.value.trim().length > 0) {
-                    this.isActive = true;
-                    this.startTimer();
-                }
-
-                if(e.target.value.endsWith(" ")) {
-                    const input = e.target.value.trim();
-                    const target = this.currentWords[this.wordIndex];
-                    const el = document.getElementById('word-' + this.wordIndex);
-
-                    if(input === target) {
-                        el.className = 'ok';
-                        this.correctCount++;
-                    } else {
-                        el.className = 'err';
-                        this.wrongCount++;
-                    }
-
-                    this.wordIndex++;
-                    const nextEl = document.getElementById('word-' + this.wordIndex);
-                    if(nextEl) {
-                        nextEl.className = 'current';
-                        // Cuộn dòng nếu cần
-                        if(nextEl.offsetTop > 40) {
-                            document.getElementById('word-rail').style.top = (20 - nextEl.offsetTop) + "px";
-                        }
-                    }
-                    e.target.value = "";
+            loadData() {
+                const saved = localStorage.getItem('v60_posts');
+                if(saved) this.posts = JSON.parse(saved);
+                else {
+                    this.posts = [
+                        { id: 1, title: "Văn bản tập 1", content: "Bầu trời cao xanh thẳm không một gợn mây những tia nắng ban mai nhẹ nhàng xuyên qua kẽ lá.", done: 124, words: 18, chars: 92 },
+                        { id: 2, title: "Thuyền Quyên", content: "Xa xa bóng người thương thấp thoáng trước thềm nhà đang đưa dâu lòng ta đau thắt khi thấy người mình yêu đi bên ai.", done: 85, words: 24, chars: 110 }
+                    ];
+                    this.save();
                 }
             },
 
-            startTimer() {
-                this.timer = setInterval(() => {
-                    this.timeLeft--;
-                    let m = Math.floor(this.timeLeft / 60);
-                    let s = this.timeLeft % 60;
-                    document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-                    
-                    if(this.timeLeft <= 0) {
-                        clearInterval(this.timer);
-                        this.finish();
-                    }
-                }, 1000);
-            },
+            save() { localStorage.setItem('v60_posts', JSON.stringify(this.posts)); },
 
-            finish() {
-                document.getElementById('typer').disabled = true;
-                const acc = Math.round((this.correctCount / (this.correctCount + this.wrongCount)) * 100) || 0;
-                document.getElementById('res-wpm').innerText = this.correctCount;
-                document.getElementById('res-acc').innerText = acc;
-                document.getElementById('res-box').style.display = 'block';
-                
-                // Cập nhật số lượt hoàn thành cho bài post
-                if(this.currentTextTitle !== "Văn bản ngẫu nhiên") {
-                    let posts = JSON.parse(localStorage.getItem('titan_posts') || "[]");
-                    let idx = posts.findIndex(p => p.title === this.currentTextTitle);
-                    if(idx !== -1) {
-                        posts[idx].done = (posts[idx].done || 0) + 1;
-                        localStorage.setItem('titan_posts', JSON.stringify(posts));
-                    }
+            createPost() {
+                const t = document.getElementById('m-title').value.trim();
+                const c = document.getElementById('m-content').value.trim();
+                if(t && c) {
+                    const newPost = {
+                        id: Date.now(), title: t, content: c,
+                        done: 0, words: c.split(/\s+/).length, chars: c.length
+                    };
+                    this.posts.unshift(newPost);
+                    this.save();
+                    this.renderCommunity();
+                    UI.closeModal();
                 }
             },
 
-            // COMMUNITY LOGIC
-            openModal() { document.getElementById('modal').style.display = 'flex'; },
-            closeModal() { document.getElementById('modal').style.display = 'none'; },
-
-            savePost() {
-                const title = document.getElementById('m-title').value.trim();
-                const content = document.getElementById('m-content').value.trim();
-                if(!title || !content) return alert("Vui lòng nhập đủ!");
-
-                const posts = JSON.parse(localStorage.getItem('titan_posts') || "[]");
-                posts.unshift({
-                    title: title,
-                    content: content,
-                    wordCount: content.split(/\s+/).length,
-                    charCount: content.length,
-                    done: 0,
-                    date: 'Today'
-                });
-                localStorage.setItem('titan_posts', JSON.stringify(posts));
-                this.renderCommTable();
-                this.closeModal();
-                // Clear form
-                document.getElementById('m-title').value = "";
-                document.getElementById('m-content').value = "";
-            },
-
-            renderCommTable() {
-                const posts = JSON.parse(localStorage.getItem('titan_posts') || "[]");
-                const tbody = document.getElementById('comm-table-body');
-                
-                // Bài mẫu nếu trống
-                if(posts.length === 0) {
-                    posts.push({title: "Thuyền Quyên", content: "Xa xa bóng người thương, thấp thoáng trước thềm nhà đang đưa dâu...", wordCount: 16, charCount: 80, done: 4, date: 'Today'});
-                }
-
-                tbody.innerHTML = posts.map((p, i) => `
+            renderCommunity() {
+                const tbody = document.getElementById('comm-tbody');
+                tbody.innerHTML = this.posts.map(p => `
                     <tr>
-                        <td><span class="status-tag">công khai</span></td>
+                        <td><span class="badge-status">công khai</span></td>
                         <td>
-                            <a class="text-title" onclick="App.playPost(${i})">${p.title}</a>
-                            <span class="text-preview">${p.content.substring(0, 60)}...</span>
+                            <a class="post-title" onclick="App.playPost(${p.id})">${p.title}</a>
+                            <span class="post-preview">${p.content.substring(0, 70)}...</span>
                         </td>
                         <td>
-                            <div style="font-size:13px;"><b>${p.wordCount} từ</b></div>
-                            <div style="font-size:11px; color:#999;">${p.charCount} kí tự</div>
+                            <div style="font-weight:700;">${p.words} từ</div>
+                            <div style="font-size:11px; color:#999;">${p.chars} kí tự</div>
                         </td>
-                        <td><b style="color:#777;">${p.done}</b></td>
-                        <td><button class="btn-play" onclick="App.playPost(${i})">Gõ thử</button></td>
+                        <td><b style="color:#666;">${p.done}</b> lượt</td>
+                        <td><button class="btn-titan btn-s" onclick="App.playPost(${p.id})">GÕ THỬ</button></td>
                     </tr>
                 `).join('');
             },
 
-            playPost(i) {
-                const posts = JSON.parse(localStorage.getItem('titan_posts') || "[]");
-                const target = posts[i];
-                this.showPage('home');
-                this.resetTyping(target.content.split(/\s+/), target.title);
+            playPost(id) {
+                const p = this.posts.find(x => x.id === id);
+                if(p) {
+                    Router.go('home');
+                    Engine.reset(p.content.split(/\s+/), p.title);
+                }
+            }
+        };
+
+        const Engine = {
+            words: [], idx: 0, timer: null, timeLeft: 60, active: false,
+            ok: 0, err: 0, currentTitle: "Văn bản ngẫu nhiên",
+
+            init() {
+                document.getElementById('master-input').addEventListener('input', (e) => this.handle(e));
+                this.reset();
+            },
+
+            reset(customWords = null, title = "Văn bản ngẫu nhiên") {
+                clearInterval(this.timer);
+                this.active = false; this.timeLeft = 60; this.idx = 0; this.ok = 0; this.err = 0;
+                this.currentTitle = title;
+
+                document.getElementById('typing-header').innerText = title;
+                document.getElementById('engine-timer').innerText = "1:00";
+                document.getElementById('master-input').value = "";
+                document.getElementById('master-input').disabled = false;
+                document.getElementById('engine-result').style.display = 'none';
+                document.getElementById('stat-wpm').innerText = "0";
+                document.getElementById('stat-acc').innerText = "0%";
+
+                this.words = customWords || [];
+                if(!customWords) {
+                    for(let i=0; i<100; i++) this.words.push(WORDS_POOL[Math.floor(Math.random()*WORDS_POOL.length)]);
+                }
+
+                const canvas = document.getElementById('word-canvas');
+                canvas.style.top = "0";
+                canvas.innerHTML = this.words.map((w, i) => `<span id="tw-${i}">${w}</span>`).join('');
+                document.getElementById('tw-0').className = 'current';
+                setTimeout(() => document.getElementById('master-input').focus(), 100);
+            },
+
+            handle(e) {
+                if(!this.active && e.target.value.length > 0) {
+                    this.active = true;
+                    this.timer = setInterval(() => {
+                        this.timeLeft--;
+                        let s = this.timeLeft;
+                        document.getElementById('engine-timer').innerText = `0:${s < 10 ? '0'+s : s}`;
+                        if(this.timeLeft <= 0) this.finish();
+                    }, 1000);
+                }
+
+                if(e.target.value.endsWith(" ")) {
+                    const typed = e.target.value.trim();
+                    const target = this.words[this.idx];
+                    const el = document.getElementById('tw-' + this.idx);
+
+                    if(typed === target) { el.className = 'correct'; this.ok++; }
+                    else { el.className = 'wrong'; this.err++; }
+
+                    this.idx++;
+                    const next = document.getElementById('tw-' + this.idx);
+                    if(next) {
+                        next.className = 'current';
+                        if(next.offsetTop > 40) {
+                            document.getElementById('word-canvas').style.top = (0 - next.offsetTop) + "px";
+                        }
+                    }
+                    e.target.value = "";
+                    
+                    // Live Stats
+                    document.getElementById('stat-wpm').innerText = this.ok;
+                    document.getElementById('stat-acc').innerText = Math.round((this.ok / (this.ok + this.err)) * 100) + "%";
+                }
+            },
+
+            finish() {
+                clearInterval(this.timer);
+                document.getElementById('master-input').disabled = true;
+                document.getElementById('res-wpm').innerText = this.ok;
+                document.getElementById('res-ok').innerText = this.ok;
+                document.getElementById('res-err').innerText = this.err;
+                document.getElementById('engine-result').style.display = 'flex';
+
+                // Cộng lượt hoàn thành
+                if(this.currentTitle !== "Văn bản ngẫu nhiên") {
+                    const p = App.posts.find(x => x.title === this.currentTitle);
+                    if(p) { p.done++; App.save(); }
+                }
+            }
+        };
+
+        const Router = {
+            init() {
+                window.onhashchange = () => this.sync();
+                this.sync();
+            },
+            go(path) { location.hash = path; },
+            sync() {
+                const path = location.hash.replace('#', '') || 'home';
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+                
+                const targetPage = document.getElementById('page-' + path);
+                if(targetPage) targetPage.classList.add('active');
+                
+                document.getElementById('top-title').innerText = path.toUpperCase();
+            }
+        };
+
+        const UI = {
+            openModal() { document.getElementById('modal-post').style.display = 'flex'; },
+            closeModal() { document.getElementById('modal-post').style.display = 'none'; },
+            updateClock() {
+                setInterval(() => {
+                    const now = new Date();
+                    document.getElementById('live-clock').innerText = now.toLocaleTimeString();
+                }, 1000);
             }
         };
 
