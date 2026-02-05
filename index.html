@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TYPING MASTER ELITE V26</title>
+    <title>GÕ BÀN PHÍM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -194,7 +194,7 @@
             localStorage.setItem('v26_ss', JSON.stringify(this.user)); location.reload();
         },
         renderNav() {
-            let h = `<div style="padding:15px; font-weight:900; color:var(--accent); font-size:22px; text-align:center">V25 TITAN</div>`;
+            let h = `<div style="padding:15px; font-weight:900; color:var(--accent); font-size:22px; text-align:center">THỬ TỐC ĐỘ GÕ PHÍM TIẾNG VIỆT</div>`;
             [1,2,3,4].forEach(i => h += `<div class="nav-item" id="ni-${i}" onclick="app.go(${i})"><i class="fa-solid fa-chevron-right"></i> ${this.conf['m'+i]}</div>`);
             h += `<div class="nav-item" id="ni-profile" onclick="app.go('profile')"><i class="fa-solid fa-id-card"></i> Hồ sơ cá nhân</div>`;
             if(this.user.isAdmin) h += `<div class="nav-item" id="ni-god" style="color:red" onclick="app.go('god')"><i class="fa-solid fa-user-shield"></i> GOD MODE</div>`;
