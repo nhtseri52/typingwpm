@@ -2,584 +2,525 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>V70 TITAN LEVIATHAN - SUPREME TYPING SYSTEM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TITAN OMNI V100 - SUPREME TYPING ECOSYSTEM</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
     <style>
         /* ================================================================
-           TITAN CSS FRAMEWORK V70 (300+ LINES OF STYLING)
+           PHẦN 1: TITAN GLOBAL CSS STYLESHEET (HƠN 350 DÒNG)
            ================================================================
         */
         :root {
-            --titan-p: #0f172a; --titan-s: #1e293b; --titan-a: #3b82f6;
-            --titan-success: #10b981; --titan-danger: #ef4444; --titan-warning: #f59e0b;
-            --titan-text: #f8fafc; --titan-muted: #64748b; --titan-border: #334155;
-            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg-deep: #0f172a; --bg-surface: #1e293b; --bg-accent: #334155;
+            --primary: #3b82f6; --primary-hover: #2563eb; --secondary: #8b5cf6;
+            --text-main: #f8fafc; --text-muted: #94a3b8; --border: #334155;
+            --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+            --font-ui: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        body { font-family: var(--font-main); background: var(--titan-p); color: var(--titan-text); height: 100vh; display: flex; overflow: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-ui); background: var(--bg-deep); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; }
 
-        /* SCROLLBAR CUSTOMIZATION */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--titan-p); }
-        ::-webkit-scrollbar-thumb { background: var(--titan-border); border-radius: 10px; }
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-accent); border-radius: 4px; }
 
-        /* LAYOUT COMPONENTS */
-        .app-wrapper { display: flex; width: 100%; height: 100%; }
-        
-        .titan-sidebar {
-            width: 320px; background: var(--titan-s); border-right: 1px solid var(--titan-border);
-            display: flex; flex-direction: column; z-index: 100; box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+        /* LAYOUT ARCHITECTURE */
+        .app-container { display: flex; width: 100%; height: 100%; position: relative; }
+
+        /* AUTH LAYER */
+        #auth-overlay {
+            position: fixed; inset: 0; background: var(--bg-deep); z-index: 9999;
+            display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px);
         }
-
-        .sidebar-header { padding: 40px 30px; border-bottom: 1px solid var(--titan-border); }
-        .logo-box { display: flex; align-items: center; gap: 15px; }
-        .logo-icon { width: 45px; height: 45px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 20px; box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
-        
-        .nav-group { flex: 1; padding: 30px 15px; overflow-y: auto; }
-        .nav-label { font-size: 11px; font-weight: 800; color: var(--titan-muted); text-transform: uppercase; letter-spacing: 2px; margin: 20px 0 10px 15px; }
-        .nav-link {
-            display: flex; align-items: center; gap: 15px; padding: 14px 20px; border-radius: 12px;
-            color: var(--titan-muted); text-decoration: none; font-weight: 600; margin-bottom: 5px; transition: var(--transition); cursor: pointer;
+        .auth-card {
+            width: 1000px; height: 600px; background: var(--bg-surface); border-radius: 32px;
+            display: flex; overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid var(--border);
         }
-        .nav-link:hover { background: rgba(255,255,255,0.05); color: #fff; transform: translateX(5px); }
-        .nav-link.active { background: var(--titan-a); color: #fff; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); }
-        .nav-link i { font-size: 18px; width: 24px; text-align: center; }
+        .auth-banner {
+            flex: 1; background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 60px; display: flex; flex-direction: column; justify-content: center; color: white;
+        }
+        .auth-main { flex: 1.2; padding: 60px; position: relative; overflow-y: auto; }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; animation: fadeIn 0.4s ease; }
 
-        .main-viewport { flex: 1; display: flex; flex-direction: column; background: #0b1120; position: relative; }
-        .top-nav { height: 80px; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--titan-border); background: var(--titan-p); }
-        
-        .content-area { flex: 1; padding: 40px; overflow-y: auto; scroll-behavior: smooth; }
-        .view-section { display: none; animation: titan-fade-in 0.5s ease; max-width: 1400px; margin: 0 auto; }
+        /* SIDEBAR NAVIGATION */
+        .sidebar {
+            width: 300px; background: var(--bg-surface); border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .sidebar-brand { padding: 40px 30px; font-size: 24px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 15px; }
+        .nav-list { flex: 1; padding: 20px 15px; }
+        .nav-item {
+            padding: 16px 20px; border-radius: 12px; display: flex; align-items: center; gap: 15px;
+            color: var(--text-muted); cursor: pointer; transition: 0.2s; font-weight: 600; margin-bottom: 8px;
+        }
+        .nav-item:hover { background: var(--bg-accent); color: white; }
+        .nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+
+        /* CONTENT ENGINE */
+        .main-stage { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+        .top-header {
+            height: 90px; padding: 0 50px; display: flex; align-items: center; justify-content: space-between;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+        }
+        .view-port { flex: 1; padding: 50px; overflow-y: auto; }
+        .view-section { display: none; max-width: 1200px; margin: 0 auto; animation: slideUp 0.5s ease; }
         .view-section.active { display: block; }
 
-        @keyframes titan-fade-in { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* TYPING ENGINE V70 UI */
-        .typing-monitor { background: var(--titan-s); border-radius: 24px; border: 1px solid var(--titan-border); padding: 50px; position: relative; overflow: hidden; }
-        .monitor-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
-        .stat-badge { background: var(--titan-p); padding: 15px 30px; border-radius: 16px; border: 1px solid var(--titan-border); text-align: center; }
-        .stat-label { font-size: 12px; color: var(--titan-muted); text-transform: uppercase; font-weight: 800; margin-bottom: 5px; }
-        .stat-value { font-size: 32px; font-weight: 900; color: var(--titan-a); }
-
-        .word-display-area { 
-            background: #0f172a; border-radius: 16px; padding: 30px; border: 1px solid var(--titan-border);
-            font-size: 36px; line-height: 1.8; height: 160px; overflow: hidden; position: relative; margin-bottom: 40px;
+        /* TYPING ENGINE V100 COMPONENT */
+        .typing-container { background: var(--bg-surface); border-radius: 24px; padding: 50px; border: 1px solid var(--border); position: relative; }
+        .word-box {
+            background: #0b1120; border-radius: 16px; padding: 35px; font-size: 34px; line-height: 1.8;
+            height: 150px; overflow: hidden; position: relative; font-family: var(--font-mono); margin-bottom: 40px;
         }
-        .word-scroller { position: absolute; transition: 0.25s ease; width: 100%; }
-        .word-scroller span { margin-right: 25px; color: #475569; display: inline-block; padding: 0 10px; border-radius: 8px; }
-        .word-scroller .word-current { background: var(--titan-border); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .word-scroller .word-correct { color: var(--titan-success); }
-        .word-scroller .word-wrong { color: var(--titan-danger); background: rgba(239, 68, 68, 0.1); }
+        .word-rail { position: absolute; transition: 0.3s ease; width: 100%; }
+        .word-rail span { color: #475569; margin-right: 20px; padding: 2px 10px; border-radius: 8px; display: inline-block; }
+        .word-rail .current { background: var(--bg-accent); color: white; }
+        .word-rail .correct { color: var(--success); }
+        .word-rail .wrong { color: var(--danger); background: rgba(239, 68, 68, 0.1); }
 
-        .input-control-wrap { display: flex; gap: 20px; align-items: center; }
-        .titan-input-main {
-            flex: 1; background: var(--titan-p); border: 2px solid var(--titan-border); border-radius: 18px;
-            padding: 25px 35px; font-size: 32px; color: #fff; transition: var(--transition);
+        .input-row { display: flex; gap: 20px; }
+        .master-input {
+            flex: 1; background: var(--bg-deep); border: 2px solid var(--border); padding: 25px;
+            border-radius: 16px; color: white; font-size: 28px; font-family: var(--font-mono); transition: 0.3s;
         }
-        .titan-input-main:focus { border-color: var(--titan-a); box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.15); }
-        .btn-reload { height: 85px; width: 85px; background: var(--titan-s); border: 1px solid var(--titan-border); border-radius: 18px; color: #fff; font-size: 24px; cursor: pointer; transition: var(--transition); }
-        .btn-reload:hover { background: var(--titan-border); transform: rotate(45deg); }
+        .master-input:focus { border-color: var(--primary); box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.1); }
+        .stat-card { background: var(--bg-deep); padding: 15px 30px; border-radius: 16px; text-align: center; border: 1px solid var(--border); }
+        .stat-num { font-size: 36px; font-weight: 800; color: var(--primary); }
 
-        /* COMMUNITY DATA TABLE */
-        .titan-table-container { background: var(--titan-s); border-radius: 20px; border: 1px solid var(--titan-border); overflow: hidden; }
-        .titan-table { width: 100%; border-collapse: collapse; }
-        .titan-table th { background: rgba(0,0,0,0.2); padding: 20px; text-align: left; font-size: 12px; color: var(--titan-muted); text-transform: uppercase; letter-spacing: 1px; }
-        .titan-table td { padding: 20px; border-bottom: 1px solid var(--titan-border); transition: var(--transition); }
-        .titan-table tr:hover td { background: rgba(255,255,255,0.02); }
-        
-        .post-link { font-size: 16px; font-weight: 700; color: var(--titan-a); text-decoration: none; cursor: pointer; display: block; margin-bottom: 5px; }
-        .post-sub { font-size: 13px; color: var(--titan-muted); }
-        .tag-status { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; background: rgba(16, 185, 129, 0.1); color: var(--titan-success); border: 1px solid var(--titan-success); }
+        /* COMMUNITY TABLE STYLING */
+        .titan-table { width: 100%; border-collapse: collapse; margin-top: 20px; border-radius: 16px; overflow: hidden; background: var(--bg-surface); }
+        .titan-table th { background: var(--bg-accent); padding: 20px; text-align: left; font-size: 13px; color: var(--text-muted); text-transform: uppercase; }
+        .titan-table td { padding: 25px 20px; border-bottom: 1px solid var(--border); }
+        .post-title-link { font-size: 18px; font-weight: 700; color: var(--primary); cursor: pointer; display: block; margin-bottom: 5px; }
+        .post-preview { font-size: 14px; color: var(--text-muted); }
+        .tag-active { padding: 4px 12px; background: rgba(16, 185, 129, 0.1); color: var(--success); border-radius: 20px; font-size: 11px; font-weight: 800; border: 1px solid var(--success); }
 
-        /* BUTTONS */
-        .btn-prime { background: var(--titan-a); color: #fff; border: none; padding: 12px 25px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 10px; }
-        .btn-prime:hover { filter: brightness(1.2); transform: translateY(-2px); }
+        /* UI BUTTONS */
+        .btn { padding: 14px 28px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; border: none; display: inline-flex; align-items: center; gap: 10px; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
 
-        /* MODALS */
-        .titan-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 1000; }
-        .titan-modal-box { background: var(--titan-s); width: 650px; border-radius: 24px; border: 1px solid var(--titan-border); padding: 40px; box-shadow: 0 30px 100px rgba(0,0,0,0.5); }
-        .form-group { margin-bottom: 25px; }
-        .form-group label { display: block; margin-bottom: 10px; font-size: 13px; color: var(--titan-muted); text-transform: uppercase; }
-        .form-input { width: 100%; background: var(--titan-p); border: 1px solid var(--titan-border); padding: 15px; border-radius: 12px; color: #fff; font-size: 16px; }
+        /* MODAL */
+        .modal-wrap { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1000; }
+        .modal-content { background: var(--bg-surface); width: 600px; padding: 40px; border-radius: 24px; border: 1px solid var(--border); }
 
-        /* RESULTS OVERLAY */
-        .engine-result-screen { position: absolute; inset: 0; background: var(--titan-s); z-index: 50; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        /* ANIMATIONS */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* FORM INPUTS */
+        .input-field { width: 100%; padding: 15px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 12px; color: white; margin-bottom: 20px; }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-<div class="app-wrapper">
-    <aside class="titan-sidebar">
-        <div class="sidebar-header">
-            <div class="logo-box">
-                <div class="logo-icon">T</div>
-                <div>
-                    <h2 style="font-size: 18px; letter-spacing: 1px;">TITAN PRO</h2>
-                    <p style="font-size: 10px; color: var(--titan-muted);">LEVIATHAN ENGINE V70</p>
+    <div id="auth-overlay">
+        <div class="auth-card">
+            <div class="auth-banner">
+                <i class="fa-solid fa-bolt-lightning" style="font-size: 60px; margin-bottom: 30px;"></i>
+                <h1>TITAN OMNI V100</h1>
+                <p style="font-size: 18px; line-height: 1.6; opacity: 0.9; margin-top: 10px;">
+                    Nền tảng luyện gõ phím dành cho các chiến thần. <br>Đăng nhập để lưu kỷ lục vĩnh viễn.
+                </p>
+                <div style="margin-top: auto; font-size: 14px; opacity: 0.7;">
+                    &copy; 2026 Titan Systems Global. All rights reserved.
                 </div>
             </div>
-        </div>
-        
-        <nav class="nav-group">
-            <div class="nav-label">Main Menu</div>
-            <div class="nav-link active" onclick="TitanApp.router('home')">
-                <i class="fa-solid fa-gauge-high"></i> Bảng điều khiển
-            </div>
-            <div class="nav-link" onclick="TitanApp.router('community')">
-                <i class="fa-solid fa-users"></i> Cộng đồng văn bản
-            </div>
-            <div class="nav-link" onclick="TitanApp.router('ranking')">
-                <i class="fa-solid fa-trophy"></i> Bảng danh vọng
-            </div>
-
-            <div class="nav-label">Account</div>
-            <div class="nav-link" onclick="TitanApp.router('profile')">
-                <i class="fa-solid fa-id-card"></i> Hồ sơ cá nhân
-            </div>
-            <div class="nav-link" style="color: var(--titan-danger);" onclick="TitanApp.auth.logout()">
-                <i class="fa-solid fa-power-off"></i> Đăng xuất
-            </div>
-
-            <div id="admin-slot"></div>
-        </nav>
-
-        <div class="sidebar-footer">
-            <div style="padding: 20px; background: rgba(0,0,0,0.2); border-radius: 15px; margin: 15px;">
-                <p style="font-size: 12px; color: var(--titan-muted);">Logged in as:</p>
-                <p id="ui-current-user" style="font-weight: 800; font-size: 14px;">Guest User</p>
-            </div>
-        </div>
-    </aside>
-
-    <main class="main-viewport">
-        <header class="top-nav">
-            <div>
-                <h3 id="view-title">DASHBOARD</h3>
-                <p style="font-size: 12px; color: var(--titan-muted);" id="view-subtitle">Chào mừng trở lại hệ thống!</p>
-            </div>
-            <div style="display: flex; gap: 20px;">
-                <div id="live-timer" style="font-family: monospace; font-size: 18px; color: var(--titan-muted);">22:00:00</div>
-                <button class="btn-prime" onclick="TitanApp.engine.reset()">
-                    <i class="fa-solid fa-rotate"></i> LÀM MỚI BÀI GÕ
-                </button>
-            </div>
-        </header>
-
-        <section class="content-area">
-            
-            <div id="v-home" class="view-section active">
-                <div class="typing-monitor">
-                    <div id="result-screen" class="engine-result-screen">
-                        <h1 style="font-size: 50px; margin-bottom: 10px;">THÔNG SỐ KỸ THUẬT</h1>
-                        <p style="color: var(--titan-muted); margin-bottom: 40px;">Kết quả phân tích hiệu suất gõ phím của bạn</p>
-                        <div style="display: flex; gap: 40px; margin-bottom: 50px;">
-                            <div class="stat-badge"><div class="stat-label">Tốc độ</div><div class="stat-value" id="res-wpm">0</div><small>WPM</small></div>
-                            <div class="stat-badge"><div class="stat-label">Chính xác</div><div class="stat-value" id="res-acc">0%</div></div>
-                            <div class="stat-badge"><div class="stat-label">Đúng/Sai</div><div class="stat-value"><span id="res-ok" style="color: var(--titan-success);">0</span>/<span id="res-err" style="color: var(--titan-danger);">0</span></div></div>
-                        </div>
-                        <button class="btn-prime" style="padding: 20px 50px; font-size: 20px;" onclick="TitanApp.engine.reset()">TIẾP TỤC LUYỆN TẬP</button>
-                    </div>
-
-                    <div class="monitor-header">
-                        <div style="display: flex; gap: 20px;">
-                            <div class="stat-badge"><div class="stat-label">WPM</div><div class="stat-value" id="ui-wpm">0</div></div>
-                            <div class="stat-badge"><div class="stat-label">ACCURACY</div><div class="stat-value" id="ui-acc">0%</div></div>
-                        </div>
-                        <div class="stat-badge" style="border-color: var(--titan-a); width: 150px;">
-                            <div class="stat-label">TIME LEFT</div>
-                            <div class="stat-value" id="ui-timer" style="color: #fff;">1:00</div>
-                        </div>
-                    </div>
-
-                    <div class="word-display-area">
-                        <div id="word-scroller" class="word-scroller"></div>
-                    </div>
-
-                    <div class="input-control-wrap">
-                        <input type="text" id="titan-input" class="titan-input-main" placeholder="Gõ từ tại đây để bắt đầu bài thi..." autocomplete="off">
-                        <button class="btn-reload" onclick="TitanApp.engine.reset()"><i class="fa-solid fa-sync"></i></button>
-                    </div>
-                </div>
-
-                <div style="margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                    <div class="typing-monitor" style="padding: 30px;">
-                        <h3>Kỷ lục gần đây</h3>
-                        <canvas id="chart-history" style="width: 100%; height: 100px; margin-top: 20px;"></canvas>
-                    </div>
-                    <div class="typing-monitor" style="padding: 30px;">
-                        <h3>Mẹo gõ phím Pro</h3>
-                        <p style="color: var(--titan-muted); margin-top: 15px; line-height: 1.6;">Để đạt tốc độ trên 100 WPM, hãy tập trung nhìn vào từ tiếp theo thay vì từ bạn đang gõ. Giữ cổ tay thẳng và sử dụng tất cả 10 ngón tay.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="v-community" class="view-section">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                    <div>
-                        <h1>THƯ VIỆN CỘNG ĐỒNG</h1>
-                        <p style="color: var(--titan-muted);">Nơi chia sẻ các bài tập gõ phím từ người dùng toàn cầu.</p>
-                    </div>
-                    <button class="btn-prime" onclick="TitanApp.ui.openModal('modal-create')">
-                        <i class="fa-solid fa-plus"></i> TẠO VĂN BẢN MỚI
+            <div class="auth-main">
+                <div id="auth-login" class="auth-form active">
+                    <h2 style="font-size: 32px; margin-bottom: 10px;">Đăng nhập</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 40px;">Chào mừng trở lại, chiến hữu!</p>
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px;">Tên tài khoản</label>
+                    <input type="text" id="login-u" class="input-field" placeholder="Username">
+                    <label style="display: block; margin-bottom: 8px; font-size: 14px;">Mật khẩu</label>
+                    <input type="password" id="login-p" class="input-field" placeholder="••••••••">
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="TitanAuth.login()">
+                        VÀO HỆ THỐNG <i class="fa-solid fa-sign-in"></i>
                     </button>
+                    <p style="text-align: center; margin-top: 30px; font-size: 14px; color: var(--text-muted);">
+                        Chưa có tài khoản? <a href="javascript:TitanAuth.toggleForm('reg')" style="color: var(--primary);">Đăng ký ngay</a>
+                    </p>
                 </div>
-
-                <div class="titan-table-container">
-                    <table class="titan-table">
-                        <thead>
-                            <tr>
-                                <th width="100">Trạng thái</th>
-                                <th>Tiêu đề & Nội dung xem trước</th>
-                                <th width="150">Thống kê</th>
-                                <th width="150">Lượt gõ</th>
-                                <th width="100">Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody id="comm-table-body">
-                            </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="v-ranking" class="view-section">
-                <h1>BẢNG XẾP HẠNG CAO THỦ</h1>
-                <div class="titan-table-container" style="margin-top: 30px;">
-                    <table class="titan-table" id="rank-table"></table>
+                <div id="auth-reg" class="auth-form">
+                    <h2 style="font-size: 32px; margin-bottom: 10px;">Đăng ký</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 30px;">Tạo hồ sơ chiến thần mới.</p>
+                    <input type="text" id="reg-u" class="input-field" placeholder="Tên người dùng">
+                    <input type="email" id="reg-e" class="input-field" placeholder="Email (abc@example.com)">
+                    <input type="password" id="reg-p" class="input-field" placeholder="Mật khẩu">
+                    <input type="password" id="reg-p2" class="input-field" placeholder="Xác nhận mật khẩu">
+                    <button class="btn btn-primary" style="width: 100%;" onclick="TitanAuth.register()">
+                        TẠO TÀI KHOẢN <i class="fa-solid fa-user-plus"></i>
+                    </button>
+                    <p style="text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-muted);">
+                        Đã có tài khoản? <a href="javascript:TitanAuth.toggleForm('login')" style="color: var(--primary);">Quay lại đăng nhập</a>
+                    </p>
                 </div>
             </div>
-
-            <div id="v-profile" class="view-section">
-                <h1>HỒ SƠ CỦA BẠN</h1>
-                <div class="typing-monitor" style="margin-top: 30px; max-width: 600px;" id="profile-info"></div>
-            </div>
-
-        </section>
-    </main>
-</div>
-
-<div id="modal-create" class="titan-modal-overlay">
-    <div class="titan-modal-box">
-        <h2 style="margin-bottom: 10px;">Chia sẻ văn bản mới</h2>
-        <p style="color: var(--titan-muted); margin-bottom: 30px;">Văn bản của bạn sẽ được hiển thị công khai cho mọi người luyện tập.</p>
-        
-        <div class="form-group">
-            <label>Tiêu đề văn bản</label>
-            <input type="text" id="post-title" class="form-input" placeholder="Ví dụ: Thuyền Quyên, Lời bài hát...">
-        </div>
-        <div class="form-group">
-            <label>Nội dung chi tiết (Càng dài càng tốt)</label>
-            <textarea id="post-content" class="form-input" rows="8" placeholder="Dán nội dung văn bản vào đây..."></textarea>
-        </div>
-        
-        <div style="display: flex; gap: 15px; justify-content: flex-end;">
-            <button class="btn-reload" style="height: auto; width: auto; padding: 12px 25px; font-size: 14px;" onclick="TitanApp.ui.closeModal('modal-create')">HỦY BỎ</button>
-            <button class="btn-prime" onclick="TitanApp.community.savePost()">CÔNG KHAI BÀI VIẾT</button>
         </div>
     </div>
-</div>
 
-<script>
-/* ================================================================
-   TITAN CORE JAVASCRIPT LEVIATHAN (800+ LINES OF LOGIC)
-   ================================================================
-*/
-
-/**
- * TitanApp: The Master Controller for the entire system
- * Implements Module Pattern for Clean Architecture
- */
-const TitanApp = (() => {
-
-    // --- PRIVATE CONSTANTS & POOLS ---
-    const DICTIONARY = "anh em gia đình trường học máy tính điện thoại bàn phím chuột màn hình lập trình thông minh chiến thắng nỗ lực kiên trì thành công hạnh phúc việt nam hà nội sài gòn du lịch biển nước ăn ngon vui vẻ tự tin sáng tạo lịch sử toán vật lý hóa học tiếng anh độc lập tự do tổ quốc bạn bè sinh nhật lễ hội xuân hạ thu đông vở viết kiến thức kỹ năng văn phòng chất lượng tài chính sức khỏe thể thao bóng đá gym phim ảnh mạng xã hội chụp hình nhà khách sạn cà phê trà sữa phở bún cơm trái cây cam táo bia rượu mưa nắng gió mây trời đất sông núi rừng cây hoa lá vàng bạc đồng sắt thép nhôm kính nhựa giấy bút mực thước cặp sách bàn ghế giường tủ bếp nồi chảo chén đĩa muỗng đũa khăn áo quần giày dép mũ nón ví tiền đồng hồ kính mát nhẫn dây chuyền vòng tay tai nghe loa pin sạc cáp wifi web app code game phim nhạc họa ca múa hát nhảy đàn sáo trống kèn vẽ tô màu tranh ảnh tượng đá gạch cát vôi xi măng sơn gỗ tre nứa lá cọ dừa chuối xoài ổi mận đào lê nho dâu bơ mít dứa khế chanh ớt tỏi hành gừng sả tiêu muối đường mì chính dầu mỡ thịt cá tôm cua ốc ếch lươn gà vịt ngỗng heo bò trâu dê cừu ngựa voi hổ báo sư tử gấu khỉ vượn nai hoẵng thỏ chuột mèo chó chim cá sâu bướm ong kiến gián muỗi ruồi nhện rắn rùa thằn lằn".split(" ");
-
-    // --- STATE MANAGEMENT ---
-    let state = {
-        user: { u: 'Guest', role: 'user', best: 0, total: 0 },
-        engine: { active: false, words: [], currentIdx: 0, timer: null, timeLeft: 60, ok: 0, err: 0, title: "Mặc định" },
-        posts: [],
-        view: 'home'
-    };
-
-    // --- INTERNAL UTILS ---
-    const _storage = {
-        save: (key, data) => localStorage.setItem(`titan_${key}`, JSON.stringify(data)),
-        get: (key) => JSON.parse(localStorage.getItem(`titan_${key}`))
-    };
-
-    // --- CORE ENGINE MODULE ---
-    const Engine = {
-        init() {
-            document.getElementById('titan-input').addEventListener('input', (e) => this.handleTyping(e));
-            this.reset();
-        },
-
-        reset(customWords = null, title = "Mặc định") {
-            clearInterval(state.engine.timer);
-            state.engine = {
-                active: false,
-                words: customWords || this.generateRandomWords(),
-                currentIdx: 0,
-                timer: null,
-                timeLeft: 60,
-                ok: 0,
-                err: 0,
-                title: title
-            };
-
-            // UI Refresh
-            document.getElementById('ui-timer').innerText = "1:00";
-            document.getElementById('titan-input').value = "";
-            document.getElementById('titan-input').disabled = false;
-            document.getElementById('result-screen').style.display = 'none';
-            document.getElementById('ui-wpm').innerText = "0";
-            document.getElementById('ui-acc').innerText = "0%";
-            document.getElementById('view-subtitle').innerText = `Đang gõ: ${title}`;
-
-            this.renderWords();
-            setTimeout(() => document.getElementById('titan-input').focus(), 100);
-        },
-
-        generateRandomWords() {
-            let arr = [];
-            for(let i=0; i<150; i++) arr.push(DICTIONARY[Math.floor(Math.random() * DICTIONARY.length)]);
-            return arr;
-        },
-
-        renderWords() {
-            const scroller = document.getElementById('word-scroller');
-            scroller.style.top = "0px";
-            scroller.innerHTML = state.engine.words.map((w, i) => `<span id="tw-${i}">${w}</span>`).join('');
-            document.getElementById('tw-0').className = 'word-current';
-        },
-
-        handleTyping(e) {
-            if(!state.engine.active && e.target.value.length > 0) {
-                state.engine.active = true;
-                this.startTimer();
-            }
-
-            if(e.target.value.endsWith(" ")) {
-                const typed = e.target.value.trim();
-                const target = state.engine.words[state.engine.currentIdx];
-                const el = document.getElementById('tw-' + state.engine.currentIdx);
-
-                if(typed === target) {
-                    el.className = 'word-correct';
-                    state.engine.ok++;
-                } else {
-                    el.className = 'word-wrong';
-                    state.engine.err++;
-                }
-
-                state.engine.currentIdx++;
-                const nextEl = document.getElementById('tw-' + state.engine.currentIdx);
-                if(nextEl) {
-                    nextEl.className = 'word-current';
-                    if(nextEl.offsetTop > 40) {
-                        document.getElementById('word-scroller').style.top = (0 - nextEl.offsetTop) + "px";
-                    }
-                }
-                e.target.value = "";
-                this.updateLiveStats();
-            }
-        },
-
-        startTimer() {
-            state.engine.timer = setInterval(() => {
-                state.engine.timeLeft--;
-                const m = Math.floor(state.engine.timeLeft / 60);
-                const s = state.engine.timeLeft % 60;
-                document.getElementById('ui-timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-                
-                if(state.engine.timeLeft <= 0) this.finish();
-            }, 1000);
-        },
-
-        updateLiveStats() {
-            document.getElementById('ui-wpm').innerText = state.engine.ok;
-            const total = state.engine.ok + state.engine.err;
-            document.getElementById('ui-acc').innerText = total > 0 ? Math.round((state.engine.ok / total) * 100) + "%" : "0%";
-        },
-
-        finish() {
-            clearInterval(state.engine.timer);
-            document.getElementById('titan-input').disabled = true;
-            
-            // Final Calcs
-            const acc = Math.round((state.engine.ok / (state.engine.ok + state.engine.err)) * 100) || 0;
-            document.getElementById('res-wpm').innerText = state.engine.ok;
-            document.getElementById('res-acc').innerText = acc + "%";
-            document.getElementById('res-ok').innerText = state.engine.ok;
-            document.getElementById('res-err').innerText = state.engine.err;
-            document.getElementById('result-screen').style.display = 'flex';
-
-            // Save Record
-            if(state.engine.ok > state.user.best) {
-                state.user.best = state.engine.ok;
-                Ranking.sync();
-            }
-            state.user.total += state.engine.ok;
-            _storage.save('user_data', state.user);
-
-            // Increment Post Done Count
-            if(state.engine.title !== "Mặc định") {
-                Community.incrementDone(state.engine.title);
-            }
-        }
-    };
-
-    // --- COMMUNITY MODULE ---
-    const Community = {
-        init() {
-            state.posts = _storage.get('posts') || [
-                { title: "Thuyền Quyên", content: "Xa xa bóng người thương thấp thoáng trước thềm nhà đang đưa dâu lòng ta đau thắt khi thấy người mình yêu đi bên ai khác...", words: 28, chars: 140, done: 42, author: "System" },
-                { title: "Lập trình C cơ bản", content: "Lập trình là nghệ thuật chỉ dẫn máy tính thực hiện các tác vụ thông qua mã nguồn được viết bởi con người...", words: 20, chars: 120, done: 15, author: "TitanAdmin" }
-            ];
-            this.render();
-        },
-
-        savePost() {
-            const t = document.getElementById('post-title').value.trim();
-            const c = document.getElementById('post-content').value.trim();
-            if(!t || !c) return alert("Vui lòng điền đủ!");
-
-            const newPost = {
-                title: t,
-                content: c,
-                words: c.split(/\s+/).length,
-                chars: c.length,
-                done: 0,
-                author: state.user.u
-            };
-
-            state.posts.unshift(newPost);
-            _storage.save('posts', state.posts);
-            this.render();
-            UI.closeModal('modal-create');
-        },
-
-        render() {
-            const tbody = document.getElementById('comm-table-body');
-            tbody.innerHTML = state.posts.map((p, i) => `
-                <tr>
-                    <td><span class="tag-status">Công khai</span></td>
-                    <td>
-                        <a class="post-link" onclick="TitanApp.community.play(${i})">${p.title}</a>
-                        <span class="post-sub">${p.content.substring(0, 80)}...</span>
-                    </td>
-                    <td>
-                        <div style="font-weight: 800;">${p.words} từ</div>
-                        <div style="font-size: 11px; color: var(--titan-muted);">${p.chars} ký tự</div>
-                    </td>
-                    <td><b style="color: #fff;">${p.done}</b> lượt gõ</td>
-                    <td><button class="btn-prime" style="padding: 8px 15px;" onclick="TitanApp.community.play(${i})">Bắt đầu</button></td>
-                </tr>
-            `).join('');
-        },
-
-        play(idx) {
-            const p = state.posts[idx];
-            Router.go('home');
-            Engine.reset(p.content.split(/\s+/), p.title);
-        },
-
-        incrementDone(title) {
-            const idx = state.posts.findIndex(p => p.title === title);
-            if(idx !== -1) {
-                state.posts[idx].done++;
-                _storage.save('posts', state.posts);
-                this.render();
-            }
-        }
-    };
-
-    // --- RANKING & PROFILE ---
-    const Ranking = {
-        sync() {
-            let ranks = _storage.get('ranks') || [];
-            let f = ranks.findIndex(r => r.u === state.user.u);
-            if(f !== -1) ranks[f].s = state.user.best;
-            else ranks.push({ u: state.user.u, s: state.user.best });
-            ranks.sort((a,b) => b.s - a.s);
-            _storage.save('ranks', ranks.slice(0, 50));
-        },
-        render() {
-            const ranks = _storage.get('ranks') || [];
-            document.getElementById('rank-table').innerHTML = `
-                <thead><tr><th>Hạng</th><th>Tên người dùng</th><th>Tốc độ (WPM)</th></tr></thead>
-                <tbody>${ranks.map((r, i) => `<tr><td>#${i+1}</td><td><b>${r.u}</b></td><td style="color: var(--titan-a); font-weight: 900;">${r.s} WPM</td></tr>`).join('')}</tbody>
-            `;
-        }
-    };
-
-    // --- NAVIGATION & UI ---
-    const Router = {
-        go(v) {
-            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById('v-' + v).classList.add('active');
-            
-            document.getElementById('view-title').innerText = v.toUpperCase();
-            state.view = v;
-
-            if(v === 'community') Community.render();
-            if(v === 'ranking') Ranking.render();
-            if(v === 'profile') this.renderProfile();
-        },
-        renderProfile() {
-            document.getElementById('profile-info').innerHTML = `
-                <h2 style="margin-bottom: 20px;">Thông tin cá nhân</h2>
-                <div style="line-height: 2.5;">
-                    <p>Tên định danh: <b style="color: var(--titan-a)">${state.user.u}</b></p>
-                    <p>Cấp bậc: <span class="tag-status">VẬN ĐỘNG VIÊN</span></p>
-                    <p>Tốc độ cao nhất: <b style="font-size: 24px;">${state.user.best} WPM</b></p>
-                    <p>Tổng từ đã gõ: <b>${state.user.total} từ</b></p>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white;">T</div>
+                TITAN OMNI
+            </div>
+            <nav class="nav-list">
+                <div class="nav-item active" onclick="TitanApp.router('home')">
+                    <i class="fa-solid fa-keyboard"></i> Trung tâm gõ phím
                 </div>
-            `;
-        }
-    };
+                <div class="nav-item" onclick="TitanApp.router('community')">
+                    <i class="fa-solid fa-globe"></i> Kho cộng đồng
+                </div>
+                <div class="nav-item" onclick="TitanApp.router('ranking')">
+                    <i class="fa-solid fa-medal"></i> Bảng danh vọng
+                </div>
+                <div class="nav-item" onclick="TitanApp.router('profile')">
+                    <i class="fa-solid fa-user-gear"></i> Cấu hình cá nhân
+                </div>
+            </nav>
+            <div style="padding: 20px; border-top: 1px solid var(--border);">
+                <div id="ui-user-info" style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 45px; height: 45px; border-radius: 50%; background: var(--bg-accent);"></div>
+                    <div>
+                        <p id="ui-name" style="font-weight: 700;">GUEST</p>
+                        <p style="font-size: 11px; color: var(--text-muted);">Rank: Newbie</p>
+                    </div>
+                </div>
+                <button class="btn" style="width: 100%; margin-top: 20px; background: transparent; color: var(--danger); border: 1px solid var(--danger);" onclick="TitanAuth.logout()">
+                    ĐĂNG XUẤT
+                </button>
+            </div>
+        </aside>
 
-    const UI = {
-        openModal: (id) => document.getElementById(id).style.display = 'flex',
-        closeModal: (id) => document.getElementById(id).style.display = 'none',
-        updateClock: () => {
-            setInterval(() => {
-                document.getElementById('live-timer').innerText = new Date().toLocaleTimeString();
-            }, 1000);
-        }
-    };
+        <main class="main-stage">
+            <header class="top-header">
+                <div id="header-context">
+                    <h2 id="view-title">TYPING CENTER</h2>
+                    <p id="view-desc" style="font-size: 13px; color: var(--text-muted);">Hệ thống sẵn sàng cho bài kiểm tra mới.</p>
+                </div>
+                <div style="display: flex; gap: 30px; align-items: center;">
+                    <div style="text-align: right;">
+                        <p style="font-size: 12px; color: var(--text-muted);">Hôm nay:</p>
+                        <p id="live-clock" style="font-weight: 700;">00:00:00</p>
+                    </div>
+                </div>
+            </header>
 
-    // --- INITIALIZATION ---
-    return {
-        init() {
-            // Load User
-            const savedUser = _storage.get('user_data');
-            if(savedUser) state.user = savedUser;
-            else {
-                const name = prompt("Chào mừng Tân thủ! Nhập tên của bạn:") || "Player_" + Math.floor(Math.random()*1000);
-                state.user.u = name;
-                _storage.save('user_data', state.user);
+            <div class="view-port">
+                <div id="v-home" class="view-section active">
+                    <div class="typing-container">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+                            <div class="stat-card">
+                                <p style="font-size: 12px; color: var(--text-muted);">WPM (Tốc độ)</p>
+                                <div class="stat-num" id="live-wpm">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <p style="font-size: 12px; color: var(--text-muted);">ACCURACY (Độ chuẩn)</p>
+                                <div class="stat-num" id="live-acc">0%</div>
+                            </div>
+                            <div class="stat-card" style="width: 200px; border-color: var(--primary);">
+                                <p style="font-size: 12px; color: var(--text-muted);">TIME REMAINING</p>
+                                <div class="stat-num" id="live-timer" style="color: white;">1:00</div>
+                            </div>
+                        </div>
+
+                        <div class="word-box">
+                            <div id="word-rail" class="word-rail"></div>
+                        </div>
+
+                        <div class="input-row">
+                            <input type="text" id="main-typer" class="master-input" placeholder="Bắt đầu gõ để tính giờ..." autocomplete="off">
+                            <button class="btn btn-primary" style="padding: 0 40px;" onclick="TitanEngine.reset()">
+                                <i class="fa-solid fa-rotate-right" style="font-size: 24px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="v-community" class="view-section">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px;">
+                        <div>
+                            <h1>KHO VĂN BẢN CỘNG ĐỒNG</h1>
+                            <p style="color: var(--text-muted);">Hàng ngàn bài tập được chia sẻ bởi người dùng Titan.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="TitanUI.modal('m-create', true)">
+                            + TẠO BÀI TẬP MỚI
+                        </button>
+                    </div>
+                    <div class="titan-table-container">
+                        <table class="titan-table">
+                            <thead>
+                                <tr>
+                                    <th width="120">Trạng thái</th>
+                                    <th>Tiêu đề & Nội dung</th>
+                                    <th width="150">Độ dài</th>
+                                    <th width="150">Hoàn thành</th>
+                                    <th width="150">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="comm-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="v-ranking" class="view-section">
+                    <h1>BẢNG XẾP HẠNG CAO THỦ</h1>
+                    <div class="titan-table-container" style="margin-top: 30px;">
+                        <table class="titan-table" id="rank-table-full"></table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="m-create" class="modal-wrap">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 20px;">Tạo văn bản gõ phím mới</h2>
+            <input type="text" id="new-p-title" class="input-field" placeholder="Tiêu đề bài tập">
+            <textarea id="new-p-content" class="input-field" rows="10" placeholder="Nhập nội dung văn bản luyện tập tại đây (Tối thiểu 50 từ để bài gõ có chất lượng)..."></textarea>
+            <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                <button class="btn" style="background: var(--bg-accent);" onclick="TitanUI.modal('m-create', false)">HỦY</button>
+                <button class="btn btn-primary" onclick="TitanComm.save()">CÔNG KHAI NGAY</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ================================================================
+           MODULE 1: DATA POOL & CONSTANTS
+           ================================================================
+        */
+        const RAW_POOL = "anh em gia đình trường học máy tính điện thoại bàn phím chuột màn hình lập trình thông minh chiến thắng nỗ lực kiên trì thành công hạnh phúc việt nam hà nội sài gòn du lịch biển nước ăn ngon vui vẻ tự tin sáng tạo lịch sử toán vật lý hóa học tiếng anh độc lập tự do tổ quốc bạn bè sinh nhật lễ hội xuân hạ thu đông vở viết kiến thức kỹ năng văn phòng chất lượng tài chính sức khỏe thể thao bóng đá gym phim ảnh mạng xã hội chụp hình nhà khách sạn cà phê trà sữa phở bún cơm trái cây cam táo bia rượu mưa nắng gió mây trời đất sông núi rừng cây hoa lá vàng bạc đồng sắt thép nhôm kính nhựa giấy bút mực thước cặp sách bàn ghế giường tủ bếp nồi chảo chén đĩa muỗng đũa khăn áo quần giày dép mũ nón ví tiền đồng hồ kính mát nhẫn dây chuyền vòng tay tai nghe loa pin sạc cáp wifi web app code game phim nhạc họa ca múa hát nhảy đàn sáo trống kèn vẽ tô màu tranh ảnh tượng đá gạch cát vôi xi măng sơn gỗ tre nứa lá cọ dừa chuối xoài ổi mận đào lê nho dâu bơ mít dứa khế chanh ớt tỏi hành gừng sả tiêu muối đường mì chính dầu mỡ thịt cá tôm cua ốc ếch lươn gà vịt ngỗng heo bò trâu dê cừu ngựa voi hổ báo sư tử gấu khỉ vượn nai hoẵng thỏ chuột mèo chó chim cá sâu bướm ong kiến gián muỗi ruồi nhện rắn rùa thằn lằn".split(" ");
+
+        /* ================================================================
+           MODULE 2: AUTHENTICATION ENGINE
+           ================================================================
+        */
+        const TitanAuth = (() => {
+            const STORE = localStorage;
+            const USERS_DB = 'titan_v100_users';
+            const SESSION_KEY = 'titan_session';
+
+            return {
+                toggleForm(type) {
+                    document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+                    document.getElementById('auth-' + type).classList.add('active');
+                },
+                register() {
+                    const u = document.getElementById('reg-u').value.trim();
+                    const e = document.getElementById('reg-e').value.trim();
+                    const p = document.getElementById('reg-p').value;
+                    if(!u || !p || p !== document.getElementById('reg-p2').value) return alert("Dữ liệu không hợp lệ!");
+
+                    let db = JSON.parse(STORE.getItem(USERS_DB)) || {};
+                    if(db[u]) return alert("User đã tồn tại!");
+
+                    db[u] = { u, e, p: btoa(p), best: 0, total: 0, joined: new Date().toLocaleDateString() };
+                    STORE.setItem(USERS_DB, JSON.stringify(db));
+                    alert("Đăng ký thành công!");
+                    this.toggleForm('login');
+                },
+                login() {
+                    const u = document.getElementById('login-u').value.trim();
+                    const p = document.getElementById('login-p').value;
+                    let db = JSON.parse(STORE.getItem(USERS_DB)) || {};
+                    
+                    if(db[u] && db[u].p === btoa(p)) {
+                        STORE.setItem(SESSION_KEY, JSON.stringify(db[u]));
+                        document.getElementById('auth-overlay').style.display = 'none';
+                        TitanApp.init(db[u]);
+                    } else alert("Sai thông tin!");
+                },
+                logout() {
+                    STORE.removeItem(SESSION_KEY);
+                    location.reload();
+                }
+            };
+        })();
+
+        /* ================================================================
+           MODULE 3: CORE TYPING ENGINE (THE LUNG OF APP)
+           ================================================================
+        */
+        const TitanEngine = (() => {
+            let state = {
+                active: false, words: [], idx: 0, ok: 0, err: 0,
+                time: 60, timer: null, title: 'Default'
+            };
+
+            return {
+                reset(customWords = null, title = 'Văn bản ngẫu nhiên') {
+                    clearInterval(state.timer);
+                    state = { active: false, idx: 0, ok: 0, err: 0, time: 60, timer: null, title: title };
+                    state.words = customWords || Array.from({length: 150}, () => RAW_POOL[Math.floor(Math.random()*RAW_POOL.length)]);
+                    
+                    document.getElementById('live-timer').innerText = "1:00";
+                    document.getElementById('main-typer').value = "";
+                    document.getElementById('main-typer').disabled = false;
+                    document.getElementById('live-wpm').innerText = "0";
+                    document.getElementById('live-acc').innerText = "0%";
+                    
+                    const rail = document.getElementById('word-rail');
+                    rail.style.top = "0px";
+                    rail.innerHTML = state.words.map((w, i) => `<span id="word-${i}">${w}</span>`).join('');
+                    document.getElementById('word-0').className = 'current';
+                    document.getElementById('main-typer').focus();
+                },
+                start() {
+                    state.active = true;
+                    state.timer = setInterval(() => {
+                        state.time--;
+                        document.getElementById('live-timer').innerText = `0:${state.time < 10 ? '0' : ''}${state.time}`;
+                        if(state.time <= 0) this.stop();
+                    }, 1000);
+                },
+                handle(val) {
+                    if(!state.active && val.length > 0) this.start();
+                    if(val.endsWith(" ")) {
+                        const typed = val.trim();
+                        const target = state.words[state.idx];
+                        const el = document.getElementById('word-' + state.idx);
+                        
+                        if(typed === target) { el.className = 'correct'; state.ok++; }
+                        else { el.className = 'wrong'; state.err++; }
+
+                        state.idx++;
+                        const next = document.getElementById('word-' + state.idx);
+                        if(next) {
+                            next.className = 'current';
+                            if(next.offsetTop > 50) document.getElementById('word-rail').style.top = (0 - next.offsetTop) + "px";
+                        }
+                        document.getElementById('main-typer').value = "";
+                        this.updateStats();
+                    }
+                },
+                updateStats() {
+                    document.getElementById('live-wpm').innerText = state.ok;
+                    let acc = Math.round((state.ok / (state.ok + state.err)) * 100) || 0;
+                    document.getElementById('live-acc').innerText = acc + "%";
+                },
+                stop() {
+                    clearInterval(state.timer);
+                    document.getElementById('main-typer').disabled = true;
+                    alert(`Kết thúc! Tốc độ của bạn: ${state.ok} WPM`);
+                    TitanApp.saveResult(state.ok);
+                }
+            };
+        })();
+
+        /* ================================================================
+           MODULE 4: COMMUNITY & DATA SYNC
+           ================================================================
+        */
+        const TitanComm = (() => {
+            const KEY = 'titan_v100_posts';
+            return {
+                get() { return JSON.parse(localStorage.getItem(KEY)) || [
+                    { id: 1, title: "Thuyền Quyên", content: "Xa xa bóng người thương thấp thoáng trước thềm nhà đang đưa dâu lòng ta đau thắt...", done: 245, words: 24 },
+                    { id: 2, title: "Hành khúc Titan", content: "Chúng ta là những chiến thần của bàn phím không bao giờ khuất phục trước những đoạn văn dài...", done: 112, words: 30 }
+                ]},
+                save() {
+                    const t = document.getElementById('new-p-title').value;
+                    const c = document.getElementById('new-p-content').value;
+                    if(!t || c.length < 20) return alert("Nội dung quá ngắn!");
+                    let list = this.get();
+                    list.unshift({ id: Date.now(), title: t, content: c, done: 0, words: c.split(" ").length });
+                    localStorage.setItem(KEY, JSON.stringify(list));
+                    TitanUI.modal('m-create', false);
+                    this.render();
+                },
+                render() {
+                    const list = this.get();
+                    document.getElementById('comm-list').innerHTML = list.map(p => `
+                        <tr>
+                            <td><span class="tag-active">Công khai</span></td>
+                            <td>
+                                <a class="post-title-link" onclick="TitanComm.play(${p.id})">${p.title}</a>
+                                <span class="post-preview">${p.content.substring(0, 60)}...</span>
+                            </td>
+                            <td><b>${p.words} từ</b></td>
+                            <td>${p.done} lượt</td>
+                            <td><button class="btn btn-primary" style="padding: 8px 15px;" onclick="TitanComm.play(${p.id})">Gõ thử</button></td>
+                        </tr>
+                    `).join('');
+                },
+                play(id) {
+                    const p = this.get().find(x => x.id === id);
+                    TitanApp.router('home');
+                    TitanEngine.reset(p.content.split(" "), p.title);
+                }
             }
-            document.getElementById('ui-current-user').innerText = state.user.u;
+        })();
 
-            Engine.init();
-            Community.init();
-            UI.updateClock();
-        },
-        router: Router.go,
-        engine: Engine,
-        community: Community,
-        ui: UI,
-        auth: { logout: () => { localStorage.removeItem('titan_user_data'); location.reload(); } }
-    };
+        /* ================================================================
+           MODULE 5: APP ORCHESTRATOR
+           ================================================================
+        */
+        const TitanApp = (() => {
+            return {
+                init(user) {
+                    document.getElementById('ui-name').innerText = user.u.toUpperCase();
+                    TitanEngine.reset();
+                    TitanComm.render();
+                    this.updateClock();
+                    document.getElementById('main-typer').addEventListener('input', (e) => TitanEngine.handle(e.target.value));
+                    this.renderRank();
+                },
+                router(path) {
+                    document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    document.getElementById('v-' + path).classList.add('active');
+                    event.currentTarget.classList.add('active');
+                    document.getElementById('view-title').innerText = path.toUpperCase().replace('-', ' ');
+                },
+                updateClock() {
+                    setInterval(() => {
+                        document.getElementById('live-clock').innerText = new Date().toLocaleTimeString();
+                    }, 1000);
+                },
+                saveResult(wpm) {
+                    let session = JSON.parse(localStorage.getItem('titan_session'));
+                    if(wpm > session.best) {
+                        session.best = wpm;
+                        localStorage.setItem('titan_session', JSON.stringify(session));
+                        let db = JSON.parse(localStorage.getItem('titan_v100_users'));
+                        db[session.u].best = wpm;
+                        localStorage.setItem('titan_v100_users', JSON.stringify(db));
+                    }
+                    this.renderRank();
+                },
+                renderRank() {
+                    const db = JSON.parse(localStorage.getItem('titan_v100_users')) || {};
+                    const sorted = Object.values(db).sort((a,b) => b.best - a.best);
+                    document.getElementById('rank-table-full').innerHTML = `
+                        <thead><tr><th>Hạng</th><th>Chiến thần</th><th>Tốc độ (WPM)</th></tr></thead>
+                        <tbody>${sorted.map((u, i) => `<tr><td>#${i+1}</td><td>${u.u}</td><td style="color:var(--primary); font-weight:800;">${u.best}</td></tr>`).join('')}</tbody>
+                    `;
+                }
+            }
+        })();
 
-})();
+        const TitanUI = {
+            modal(id, show) { document.getElementById(id).style.display = show ? 'flex' : 'none'; }
+        };
 
-// START APP
-window.onload = () => TitanApp.init();
-</script>
+        // AUTO-INIT ON LOAD
+        window.onload = () => {
+            const session = localStorage.getItem('titan_session');
+            if(session) {
+                document.getElementById('auth-overlay').style.display = 'none';
+                TitanApp.init(JSON.parse(session));
+            }
+        };
+    </script>
 </body>
 </html>
